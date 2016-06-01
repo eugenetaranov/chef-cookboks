@@ -1,4 +1,6 @@
-# lamp_jenkins
-
-TODO: Enter the cookbook description here.
-
+- LAMP server based on CentOS
+- Tomcat (Jetty) + Jenkins (deployed as war to app server)
+- "/jenkins" proxied from :80,:443 to :8080
+- SSL
+- phpinfo.php
+- kitchen, inspec
