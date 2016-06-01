@@ -1,0 +1,6 @@
+include_recipe 'selinux_policy'
+include_recipe 'lamp_jenkins::firewall'
+include_recipe 'ssl_certificate'
+include_recipe 'lamp_jenkins::web'
+include_recipe 'lamp_jenkins::jenkins'
+include_recipe 'lamp_jenkins::database'

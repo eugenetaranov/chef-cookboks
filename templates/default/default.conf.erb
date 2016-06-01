@@ -1,0 +1,45 @@
+<VirtualHost *:80>
+  ServerName <%= node['hostname'] %>
+  ServerAdmin 'ops@example.com'
+
+  DocumentRoot <%= node['lamp_jenkins']['document_root'] %>
+  DirectoryIndex index.php index.html
+
+  Redirect "/" "https://<%= node['hostname'] %>/"
+
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName <%= node['hostname'] %>
+  ServerAdmin 'ops@example.com'
+  SSLEngine on
+  SSLCertificateFile <%= node['lamp_jenkins']['ssl_key']['cert_path'] %>
+  SSLCertificateKeyFile <%= node['lamp_jenkins']['ssl_key']['key_path'] %>
+
+
+  DocumentRoot <%= node['lamp_jenkins']['document_root'] %>
+
+  ProxyPass "/jenkins" "http://127.0.0.1:8080/jenkins"
+  ProxyPassReverse "/jenkins" "http://127.0.0.1:8080/jenkins"
+
+  <Directory "/">
+          Options -Indexes -FollowSymLinks
+          AllowOverride None
+  </Directory>
+  <Directory <%= node['lamp_jenkins']['document_root'] %> >
+          Options -Indexes -FollowSymLinks
+          AllowOverride None
+          Require all granted
+  </Directory>
+
+  ErrorLog /var/log/httpd/error.log
+
+  LogLevel warn
+
+  CustomLog /var/log/httpd/access.log combined
+  ServerSignature Off
+
+  AddType application/x-httpd-php .php
+  AddType application/x-httpd-php-source .phps
+  DirectoryIndex index.php index.html
+</VirtualHost>
